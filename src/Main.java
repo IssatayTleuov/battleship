@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.Map;
 
 public class Main {
@@ -27,7 +30,7 @@ public class Main {
             "J", 10
     );
     public static void main(String[] args) {
-        printBattlefield();
+        placeAircraft();
     }
 
     public static void printBattlefield() {
@@ -36,6 +39,17 @@ public class Main {
                 System.out.print(battlefield[i][j] + " ");
             }
             System.out.println();
+        }
+    }
+
+    public static boolean placeAircraft() {
+        printBattlefield();
+        System.out.println("Enter the coordinates of the Aircraft Carrier (5 cells):");
+        try (InputStreamReader reader1 = new InputStreamReader(System.in);
+             BufferedReader reader2 = new BufferedReader(reader1)) {
+            String input = reader2.readLine();
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
