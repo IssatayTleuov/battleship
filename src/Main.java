@@ -31,6 +31,7 @@ public class Main {
     );
     public static void main(String[] args) {
         placeAircraft();
+        printBattlefield();
     }
 
     public static void printBattlefield() {
@@ -42,6 +43,28 @@ public class Main {
         }
     }
 
+    public static void placeShip(int[] coordinates) {
+        if (coordinates[0] == coordinates[2]) {
+            int mainArray = coordinates[0];
+            int nestedArray1 = coordinates[1];
+            int nestedArray2 = coordinates[3];
+            for (int i = mainArray; i <= mainArray; i++) {
+                for (int j = nestedArray1; j <= nestedArray2; j++) {
+                    battlefield[i][j] = "O";
+                }
+            }
+        } else if (coordinates[1] == coordinates[3]) {
+            int mainArray1 = coordinates[0];
+            int mainArray2 = coordinates[2];
+            int nestedArray = coordinates[1];
+            for (int i = mainArray1; i <= mainArray2; i++) {
+                for (int j = nestedArray; j <= nestedArray; j++) {
+                    battlefield[i][j] = "O";
+                }
+            }
+        }
+     }
+
     public static void placeAircraft() {
         boolean isShipPlaced = false;
         while (!isShipPlaced) {
@@ -49,25 +72,29 @@ public class Main {
                  BufferedReader reader2 = new BufferedReader(reader1)) {
                 printBattlefield();
                 System.out.println("Enter the coordinates of the Aircraft Carrier (5 cells):");
-                char[] coordinates = reader2.readLine().toCharArray();
+                char[] coordinates = reader2.readLine().replace(" ", "").toCharArray();
                 int[] arrayIndexes = new int[4];
-                for (int i = 0; i < coordinates.length - 1; i++) {
+                for (int i = 0; i <= coordinates.length - 1; i++) {
                     if (battlefieldIndex.containsKey(String.valueOf(coordinates[i]))) {
                         arrayIndexes[i] = battlefieldIndex.get(String.valueOf(coordinates[i]));
                     } else {
-                        arrayIndexes[i] = coordinates[i];
+                        arrayIndexes[i] = Character.getNumericValue(coordinates[i]);
                     }
+                }
 
                     if (arrayIndexes[0] == arrayIndexes[2] || arrayIndexes[1] == arrayIndexes[3]) {
-                        if (arrayIndexes[0] - arrayIndexes[2] + 1 == 5) {
-
-                        } else if (arrayIndexes[1] arrayIndexes[3]) {
-
+                        if (Math.abs(arrayIndexes[0] - arrayIndexes[2]) + 1 == 5) {
+                            placeShip(arrayIndexes);
+                            isShipPlaced = true;
+                        } else if (Math.abs(arrayIndexes[1] - arrayIndexes[3]) + 1 == 5) {
+                            placeShip(arrayIndexes);
+                            isShipPlaced = true;
+                        } else {
+                            System.out.println("Error! Wrong length of the Aircraft! Try again:");
                         }
                     } else {
                         System.out.println("Error! Wrong ship location! Try again:");
                     }
-                }
             } catch (Exception e) {
                 throw new RuntimeException(e.getMessage());
             }
