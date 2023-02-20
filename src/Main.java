@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,13 +40,11 @@ public class Main {
     ));
 
     public static void main(String[] args) {
-        shipList.forEach((k, v) -> {
-            placeShips(k, v);
-            printBattlefield();
-        });
+        shipList.forEach(Main::placeShips);
     }
 
     public static void printBattlefield() {
+        System.out.println();
         for (int i = 0; i < battlefield.length - 1; i++) {
             for (int j = 0; j < battlefield[i].length - 1; j++) {
                 System.out.print(battlefield[i][j] + " ");
@@ -83,7 +82,6 @@ public class Main {
         try (InputStreamReader reader1 = new InputStreamReader(System.in);
              BufferedReader reader2 = new BufferedReader(reader1)) {
             while (!isShipPlaced) {
-
                 char[] coordinates = reader2.readLine().replace(" ", "").toCharArray();
                 int[] arrayIndexes = new int[4];
                 for (int i = 0; i <= coordinates.length - 1; i++) {
@@ -108,7 +106,7 @@ public class Main {
                     System.out.println("Error! Wrong ship location! Try again:");
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
