@@ -1,10 +1,10 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
-    static String[][] battlefield =  {
+    static String[][] battlefield = {
             {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
             {"A", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
             {"B", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
@@ -29,9 +29,20 @@ public class Main {
             "I", 9,
             "J", 10
     );
+
+    static TreeMap<String, Integer> shipList = new TreeMap<>(Map.of(
+            "Aircraft Carrier", 5,
+            "Battleship", 4,
+            "Submarine", 3,
+            "Cruiser", 3,
+            "Destroyer", 2
+    ));
+
     public static void main(String[] args) {
-        placeAircraft();
-        printBattlefield();
+        shipList.forEach((k, v) -> {
+            placeShips(k, v);
+            printBattlefield();
+        });
     }
 
     public static void printBattlefield() {
@@ -63,15 +74,16 @@ public class Main {
                 }
             }
         }
-     }
+    }
 
-    public static void placeAircraft() {
+    public static void placeShips(String shipName, int shipSize) {
         boolean isShipPlaced = false;
-        while (!isShipPlaced) {
-            try (InputStreamReader reader1 = new InputStreamReader(System.in);
-                 BufferedReader reader2 = new BufferedReader(reader1)) {
-                printBattlefield();
-                System.out.println("Enter the coordinates of the Aircraft Carrier (5 cells):");
+        printBattlefield();
+        System.out.println("Enter the coordinates of the " + shipName + " ("+ shipSize +" cells):");
+        try (InputStreamReader reader1 = new InputStreamReader(System.in);
+             BufferedReader reader2 = new BufferedReader(reader1)) {
+            while (!isShipPlaced) {
+
                 char[] coordinates = reader2.readLine().replace(" ", "").toCharArray();
                 int[] arrayIndexes = new int[4];
                 for (int i = 0; i <= coordinates.length - 1; i++) {
@@ -82,22 +94,22 @@ public class Main {
                     }
                 }
 
-                    if (arrayIndexes[0] == arrayIndexes[2] || arrayIndexes[1] == arrayIndexes[3]) {
-                        if (Math.abs(arrayIndexes[0] - arrayIndexes[2]) + 1 == 5) {
-                            placeShip(arrayIndexes);
-                            isShipPlaced = true;
-                        } else if (Math.abs(arrayIndexes[1] - arrayIndexes[3]) + 1 == 5) {
-                            placeShip(arrayIndexes);
-                            isShipPlaced = true;
-                        } else {
-                            System.out.println("Error! Wrong length of the Aircraft! Try again:");
-                        }
+                if (arrayIndexes[0] == arrayIndexes[2] || arrayIndexes[1] == arrayIndexes[3]) {
+                    if (Math.abs(arrayIndexes[0] - arrayIndexes[2]) + 1 == shipSize) {
+                        placeShip(arrayIndexes);
+                        isShipPlaced = true;
+                    } else if (Math.abs(arrayIndexes[1] - arrayIndexes[3]) + 1 == shipSize) {
+                        placeShip(arrayIndexes);
+                        isShipPlaced = true;
                     } else {
-                        System.out.println("Error! Wrong ship location! Try again:");
+                        System.out.println("Error! Wrong length of the " + shipName + "! Try again:");
                     }
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
+                } else {
+                    System.out.println("Error! Wrong ship location! Try again:");
+                }
             }
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
