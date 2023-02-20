@@ -54,7 +54,7 @@ public class Main {
         }
     }
 
-    public static void placeShip(int[] coordinates) {
+    public static void changeBattlefield(int[] coordinates) {
         if (coordinates[0] == coordinates[2]) {
             int mainArray = coordinates[0];
             int nestedArray1 = coordinates[1];
@@ -96,10 +96,10 @@ public class Main {
 
                 if (arrayIndexes[0] == arrayIndexes[2] || arrayIndexes[1] == arrayIndexes[3]) {
                     if (Math.abs(arrayIndexes[0] - arrayIndexes[2]) + 1 == shipSize) {
-                        placeShip(arrayIndexes);
+                        changeBattlefield(arrayIndexes);
                         isShipPlaced = true;
                     } else if (Math.abs(arrayIndexes[1] - arrayIndexes[3]) + 1 == shipSize) {
-                        placeShip(arrayIndexes);
+                        changeBattlefield(arrayIndexes);
                         isShipPlaced = true;
                     } else {
                         System.out.println("Error! Wrong length of the " + shipName + "! Try again:");
