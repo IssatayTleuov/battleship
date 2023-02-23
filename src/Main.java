@@ -42,11 +42,12 @@ public class Main {
         shipList.put("Destroyer", 2);
 
         try (reader) {
-            for (Map.Entry<String, Integer> entry : shipList.entrySet()) {
-                String key = entry.getKey();
-                Integer value = entry.getValue();
-                placeShips(key, value);
-            }
+//            for (Map.Entry<String, Integer> entry : shipList.entrySet()) {
+//                String key = entry.getKey();
+//                Integer value = entry.getValue();
+//                placeShips(key, value);
+//            }
+            placeShips("Submarine", 3);
             printBattlefield();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -95,9 +96,6 @@ public class Main {
             for (int i = 0; i <= arrayIndexes.length - 1; i++) {
                 if (battlefieldIndex.containsKey(String.valueOf(coordinates[i]))) {
                     arrayIndexes[i] = battlefieldIndex.get(String.valueOf(coordinates[i]));
-                } else if (i == 3 && coordinates.length == 5) {
-                    String srtIndex = new String(new char[]{coordinates[3], coordinates[4]});
-                    arrayIndexes[i] = Integer.parseInt(srtIndex);
                 } else {
                     arrayIndexes[i] = Character.getNumericValue(coordinates[i]);
                 }
