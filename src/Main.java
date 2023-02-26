@@ -1,9 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     static String[][] battlefield = {
@@ -33,7 +32,7 @@ public class Main {
     );
     static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LinkedHashMap<String, Integer> shipList = new LinkedHashMap<>();
         shipList.put("Aircraft Carrier", 5);
         shipList.put("Battleship", 4);
@@ -42,12 +41,12 @@ public class Main {
         shipList.put("Destroyer", 2);
 
         try (reader) {
-//            for (Map.Entry<String, Integer> entry : shipList.entrySet()) {
-//                String key = entry.getKey();
-//                Integer value = entry.getValue();
-//                placeShips(key, value);
-//            }
-            placeShips("Submarine", 3);
+            for (Map.Entry<String, Integer> entry : shipList.entrySet()) {
+                String key = entry.getKey();
+                Integer value = entry.getValue();
+                placeShips(key, value);
+            }
+//            placeShips("Submarine", 3);
             printBattlefield();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -64,20 +63,20 @@ public class Main {
         }
     }
 
-    public static void changeBattlefield(int[] coordinates) {
-        if (coordinates[0] == coordinates[2]) {
-            int mainArray = coordinates[0];
-            int nestedArray1 = coordinates[1];
-            int nestedArray2 = coordinates[3];
+    public static void changeBattlefield(ArrayList<Integer> coordinates) {
+        if (Objects.equals(coordinates.get(0), coordinates.get(2))) {
+            int mainArray = coordinates.get(0);
+            int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
+            int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
             for (int i = mainArray; i <= mainArray; i++) {
                 for (int j = nestedArray1; j <= nestedArray2; j++) {
                     battlefield[i][j] = "O";
                 }
             }
-        } else if (coordinates[1] == coordinates[3]) {
-            int mainArray1 = coordinates[0];
-            int mainArray2 = coordinates[2];
-            int nestedArray = coordinates[1];
+        } else if (Objects.equals(coordinates.get(1), coordinates.get(3))) {
+            int mainArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
+            int mainArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
+            int nestedArray = coordinates.get(1);
             for (int i = mainArray1; i <= mainArray2; i++) {
                 for (int j = nestedArray; j <= nestedArray; j++) {
                     battlefield[i][j] = "O";
@@ -91,22 +90,35 @@ public class Main {
         printBattlefield();
         System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
         while (!isShipPlaced) {
-            char[] coordinates = reader.readLine().replace(" ", "").toCharArray();
-            int[] arrayIndexes = new int[4];
-            for (int i = 0; i <= arrayIndexes.length - 1; i++) {
-                if (battlefieldIndex.containsKey(String.valueOf(coordinates[i]))) {
-                    arrayIndexes[i] = battlefieldIndex.get(String.valueOf(coordinates[i]));
+            char[] chars = reader.readLine().replace(" ", "").toCharArray();
+            int[] ints = new int[5];
+            for (int i = 0; i <= chars.length - 1; i++) {
+                if (battlefieldIndex.containsKey(String.valueOf(chars[i]))) {
+                    ints[i] = battlefieldIndex.get(String.valueOf(chars[i]));
+                } else if (chars.length == 5) {
+                    if (chars[i] == '1' && chars[i + 1] == '0') {
+                        ints[i] = Integer.parseInt(String
+                                .valueOf(new char[]{chars[i], chars[i + 1]}));
+                        ++i;
+                    } else {
+                        ints[i] = Character.getNumericValue(chars[i]);
+                    }
                 } else {
-                    arrayIndexes[i] = Character.getNumericValue(coordinates[i]);
+                    ints[i] = Character.getNumericValue(chars[i]);
                 }
             }
 
-            if (arrayIndexes[0] == arrayIndexes[2] || arrayIndexes[1] == arrayIndexes[3]) {
-                if (Math.abs(arrayIndexes[0] - arrayIndexes[2]) + 1 == shipSize) {
-                    changeBattlefield(arrayIndexes);
+            ArrayList<Integer> coordinates = Arrays.stream(ints)
+                    .boxed()
+                    .collect(Collectors.toCollection(ArrayList::new));
+            coordinates.removeIf(v -> (v == 0));
+
+            if (Objects.equals(coordinates.get(0), coordinates.get(2)) || Objects.equals(coordinates.get(1), coordinates.get(3))) {
+                if (Math.abs(coordinates.get(0) - coordinates.get(2)) + 1 == shipSize) {
+                    changeBattlefield(coordinates);
                     isShipPlaced = true;
-                } else if (Math.abs(arrayIndexes[1] - arrayIndexes[3]) + 1 == shipSize) {
-                    changeBattlefield(arrayIndexes);
+                } else if (Math.abs(coordinates.get(1) - coordinates.get(3)) + 1 == shipSize) {
+                    changeBattlefield(coordinates);
                     isShipPlaced = true;
                 } else {
                     System.out.println("Error! Wrong length of the " + shipName + "! Try again:");
