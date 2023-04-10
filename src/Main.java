@@ -113,7 +113,10 @@ public class Main {
                     .collect(Collectors.toCollection(ArrayList::new));
             coordinates.removeIf(v -> (v == 0));
 
-            checkBattlefield(coordinates);
+            boolean isCorrect = checkBattlefield(coordinates);
+            if (!isCorrect) {
+                continue;
+            }
 
             if (Objects.equals(coordinates.get(0), coordinates.get(2)) || Objects.equals(coordinates.get(1), coordinates.get(3))) {
                 if (Math.abs(coordinates.get(0) - coordinates.get(2)) + 1 == shipSize) {
@@ -131,7 +134,8 @@ public class Main {
         }
     }
 
-    public static void checkBattlefield(ArrayList<Integer> coordinates) {
+    public static boolean checkBattlefield(ArrayList<Integer> coordinates) {
+        boolean isCorrect = true;
         if (Objects.equals(coordinates.get(0), coordinates.get(2))) {
             int mainArray = coordinates.get(0);
             int mainIndex = ((mainArray == 10) ? mainArray : mainArray + 1);
@@ -142,6 +146,7 @@ public class Main {
                 for (int j = nestedArray1 - 1; j <= nested2; j++) {
                     if (battlefield[i][j].equals("O")) {
                         System.out.println("Error! You placed it too close to another one. Try again:");
+                        isCorrect = false;
                         break;
                     }
                 }
@@ -156,10 +161,12 @@ public class Main {
                 for (int j = nestedArray - 1; j <= nestedIndex; j++) {
                     if (battlefield[i][j].equals("O")) {
                         System.out.println("Error! You placed it too close to another one. Try again:");
+                        isCorrect = false;
                         break;
                     }
                 }
             }
         }
+        return isCorrect;
     }
 }
