@@ -32,7 +32,7 @@ public class Main {
     );
     static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         LinkedHashMap<String, Integer> shipList = new LinkedHashMap<>();
         shipList.put("Aircraft Carrier", 5);
         shipList.put("Battleship", 4);
@@ -46,7 +46,7 @@ public class Main {
                 Integer value = entry.getValue();
                 placeShips(key, value);
             }
-//            placeShips("Submarine", 3);
+//            placeShips("Battleship", 4);
             printBattlefield();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -113,6 +113,8 @@ public class Main {
                     .collect(Collectors.toCollection(ArrayList::new));
             coordinates.removeIf(v -> (v == 0));
 
+            checkBattlefield(coordinates);
+
             if (Objects.equals(coordinates.get(0), coordinates.get(2)) || Objects.equals(coordinates.get(1), coordinates.get(3))) {
                 if (Math.abs(coordinates.get(0) - coordinates.get(2)) + 1 == shipSize) {
                     changeBattlefield(coordinates);
@@ -125,6 +127,38 @@ public class Main {
                 }
             } else {
                 System.out.println("Error! Wrong ship location! Try again:");
+            }
+        }
+    }
+
+    public static void checkBattlefield(ArrayList<Integer> coordinates) {
+        if (Objects.equals(coordinates.get(0), coordinates.get(2))) {
+            int mainArray = coordinates.get(0);
+            int mainIndex = ((mainArray == 10) ? mainArray : mainArray + 1);
+            int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
+            int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
+            int nested2 =  ((nestedArray2 == 10) ? nestedArray2 : nestedArray2 + 1);
+            for (int i = mainArray - 1; i <= mainIndex; i++) {
+                for (int j = nestedArray1 - 1; j <= nested2; j++) {
+                    if (battlefield[i][j].equals("O")) {
+                        System.out.println("Error! You placed it too close to another one. Try again:");
+                        break;
+                    }
+                }
+            }
+        } else if (Objects.equals(coordinates.get(1), coordinates.get(3))) {
+            int mainArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
+            int mainArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
+            int main2 =  ((mainArray2 == 10) ? mainArray2 : mainArray2 + 1);
+            int nestedArray = coordinates.get(1);
+            int nestedIndex = ((nestedArray == 10) ? nestedArray : nestedArray + 1);
+            for (int i = mainArray1 - 1; i <= main2; i++) {
+                for (int j = nestedArray - 1; j <= nestedIndex; j++) {
+                    if (battlefield[i][j].equals("O")) {
+                        System.out.println("Error! You placed it too close to another one. Try again:");
+                        break;
+                    }
+                }
             }
         }
     }
