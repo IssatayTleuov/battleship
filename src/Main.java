@@ -63,68 +63,28 @@ public class Main {
         }
     }
 
-    public static void changeBattlefield(ArrayList<Integer> coordinates) {
-        if (Objects.equals(coordinates.get(0), coordinates.get(2))) {
-            int mainArray = coordinates.get(0);
-            int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
-            int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
-            for (int i = mainArray; i <= mainArray; i++) {
-                for (int j = nestedArray1; j <= nestedArray2; j++) {
-                    battlefield[i][j] = "O";
-                }
-            }
-        } else if (Objects.equals(coordinates.get(1), coordinates.get(3))) {
-            int mainArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
-            int mainArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
-            int nestedArray = coordinates.get(1);
-            for (int i = mainArray1; i <= mainArray2; i++) {
-                for (int j = nestedArray; j <= nestedArray; j++) {
-                    battlefield[i][j] = "O";
-                }
-            }
-        }
-    }
-
     public static void placeShips(String shipName, int shipSize) throws IOException {
         boolean isShipPlaced = false;
+        int mainArray;
+        int nestedArray1;
+        int nestedArray2;
         printBattlefield();
         System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
         while (!isShipPlaced) {
             char[] chars = reader.readLine().replace(" ", "").toCharArray();
-            int[] ints = new int[5];
-            for (int i = 0; i <= chars.length - 1; i++) {
-                if (battlefieldIndex.containsKey(String.valueOf(chars[i]))) {
-                    ints[i] = battlefieldIndex.get(String.valueOf(chars[i]));
-                } else if (chars.length == 5) {
-                    if (chars[i] == '1' && chars[i + 1] == '0') {
-                        ints[i] = Integer.parseInt(String
-                                .valueOf(new char[]{chars[i], chars[i + 1]}));
-                        ++i;
-                    } else {
-                        ints[i] = Character.getNumericValue(chars[i]);
-                    }
-                } else {
-                    ints[i] = Character.getNumericValue(chars[i]);
-                }
-            }
-
-            ArrayList<Integer> coordinates = Arrays.stream(ints)
-                    .boxed()
-                    .collect(Collectors.toCollection(ArrayList::new));
-            coordinates.removeIf(v -> (v == 0));
-
-            boolean isCorrect = checkBattlefield(coordinates);
-            if (!isCorrect) {
-                continue;
-            }
+            ArrayList<Integer> coordinates = coordinatesToIndexes(chars);
 
             if (Objects.equals(coordinates.get(0), coordinates.get(2)) || Objects.equals(coordinates.get(1), coordinates.get(3))) {
                 if (Math.abs(coordinates.get(0) - coordinates.get(2)) + 1 == shipSize) {
-                    changeBattlefield(coordinates);
-                    isShipPlaced = true;
+                    mainArray = coordinates.get(1);
+                    nestedArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
+                    nestedArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
+                    isShipPlaced = changeBattlefield(nestedArray1, nestedArray2, mainArray, mainArray);
                 } else if (Math.abs(coordinates.get(1) - coordinates.get(3)) + 1 == shipSize) {
-                    changeBattlefield(coordinates);
-                    isShipPlaced = true;
+                    mainArray = coordinates.get(0);
+                    nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
+                    nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
+                    isShipPlaced = changeBattlefield(mainArray, mainArray, nestedArray1, nestedArray2);
                 } else {
                     System.out.println("Error! Wrong length of the " + shipName + "! Try again:");
                 }
@@ -134,39 +94,56 @@ public class Main {
         }
     }
 
-    public static boolean checkBattlefield(ArrayList<Integer> coordinates) {
-        boolean isCorrect = true;
-        if (Objects.equals(coordinates.get(0), coordinates.get(2))) {
-            int mainArray = coordinates.get(0);
-            int mainIndex = ((mainArray == 10) ? mainArray : mainArray + 1);
-            int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
-            int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
-            int nested2 =  ((nestedArray2 == 10) ? nestedArray2 : nestedArray2 + 1);
-            for (int i = mainArray - 1; i <= mainIndex; i++) {
-                for (int j = nestedArray1 - 1; j <= nested2; j++) {
-                    if (battlefield[i][j].equals("O")) {
-                        System.out.println("Error! You placed it too close to another one. Try again:");
-                        isCorrect = false;
-                        break;
-                    }
+    public static ArrayList<Integer> coordinatesToIndexes(char[] chars) {
+        int[] ints = new int[5];
+        for (int i = 0; i <= chars.length - 1; i++) {
+            if (battlefieldIndex.containsKey(String.valueOf(chars[i]))) {
+                ints[i] = battlefieldIndex.get(String.valueOf(chars[i]));
+            } else if (chars.length == 5) {
+                if (chars[i] == '1' && chars[i + 1] == '0') {
+                    ints[i] = Integer.parseInt(String
+                            .valueOf(new char[]{chars[i], chars[i + 1]}));
+                    ++i;
+                } else {
+                    ints[i] = Character.getNumericValue(chars[i]);
                 }
+            } else {
+                ints[i] = Character.getNumericValue(chars[i]);
             }
-        } else if (Objects.equals(coordinates.get(1), coordinates.get(3))) {
-            int mainArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
-            int mainArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
-            int main2 =  ((mainArray2 == 10) ? mainArray2 : mainArray2 + 1);
-            int nestedArray = coordinates.get(1);
-            int nestedIndex = ((nestedArray == 10) ? nestedArray : nestedArray + 1);
-            for (int i = mainArray1 - 1; i <= main2; i++) {
-                for (int j = nestedArray - 1; j <= nestedIndex; j++) {
-                    if (battlefield[i][j].equals("O")) {
-                        System.out.println("Error! You placed it too close to another one. Try again:");
-                        isCorrect = false;
-                        break;
-                    }
+        }
+
+        ArrayList<Integer> coordinates = Arrays.stream(ints)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+        coordinates.removeIf(v -> (v == 0));
+        return coordinates;
+    }
+
+    public static boolean changeBattlefield(int mainArray1, int mainArray2, int nestedArray1, int nestedArray2) {
+        boolean isChecked = true;
+        boolean isPlaced = false;
+        int minMainIndex = mainArray1 - 1;
+        int maxMainIndex = ((mainArray2 == 10) ? mainArray2 : mainArray2 + 1);
+        int minNestedIndex = nestedArray1 - 1;
+        int maxNestedIndex = ((nestedArray2 == 10) ? nestedArray2 : nestedArray2 + 1);
+        for (int i = minMainIndex; i <= maxMainIndex; i++) {
+            for (int j = minNestedIndex; j <= maxNestedIndex; j++) {
+                if (battlefield[i][j].equals("O")) {
+                    System.out.println("Error! You placed it too close to another one. Try again:");
+                    isChecked = false;
+                    break;
                 }
             }
         }
-        return isCorrect;
+
+        if (isChecked) {
+            for (int i = mainArray1; i <= mainArray2; i++) {
+                for (int j = nestedArray1; j <= nestedArray2; j++) {
+                    battlefield[i][j] = "O";
+                }
+            }
+            isPlaced = true;
+        }
+        return isPlaced;
     }
 }
