@@ -65,6 +65,9 @@ public class Main {
 
     public static void placeShips(String shipName, int shipSize) throws IOException {
         boolean isShipPlaced = false;
+        int mainArray;
+        int nestedArray1;
+        int nestedArray2;
         printBattlefield();
         System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
         while (!isShipPlaced) {
@@ -73,9 +76,15 @@ public class Main {
 
             if (Objects.equals(coordinates.get(0), coordinates.get(2)) || Objects.equals(coordinates.get(1), coordinates.get(3))) {
                 if (Math.abs(coordinates.get(0) - coordinates.get(2)) + 1 == shipSize) {
-                    isShipPlaced = changeBattlefield(coordinates);
+                    mainArray = coordinates.get(1);
+                    nestedArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
+                    nestedArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
+                    isShipPlaced = changeBattlefield(nestedArray1, nestedArray2, mainArray, mainArray);
                 } else if (Math.abs(coordinates.get(1) - coordinates.get(3)) + 1 == shipSize) {
-                    isShipPlaced = changeBattlefield(coordinates);
+                    mainArray = coordinates.get(0);
+                    nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
+                    nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
+                    isShipPlaced = changeBattlefield(mainArray, mainArray, nestedArray1, nestedArray2);
                 } else {
                     System.out.println("Error! Wrong length of the " + shipName + "! Try again:");
                 }
@@ -110,61 +119,30 @@ public class Main {
         return coordinates;
     }
 
-    public static boolean changeBattlefield(ArrayList<Integer> coordinates) {
+    public static boolean changeBattlefield(int mainArray1, int mainArray2, int nestedArray1, int nestedArray2) {
         boolean isChecked = true;
         boolean isPlaced = false;
-        if (Objects.equals(coordinates.get(0), coordinates.get(2))) {
-            int mainArray = coordinates.get(0);
-            int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
-            int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
-            int minMainIndex = mainArray - 1;
-            int maxMainIndex = ((mainArray == 10) ? mainArray : mainArray + 1);
-            int minNestedIndex = nestedArray1 - 1;
-            int maxNestedIndex = ((nestedArray2 == 10) ? nestedArray2 : nestedArray2 + 1);
-            for (int i = minMainIndex; i <= maxMainIndex; i++) {
-                for (int j = minNestedIndex; j <= maxNestedIndex; j++) {
-                    if (battlefield[i][j].equals("O")) {
-                        System.out.println("Error! You placed it too close to another one. Try again:");
-                        isChecked = false;
-                        break;
-                    }
+        int minMainIndex = mainArray1 - 1;
+        int maxMainIndex = ((mainArray2 == 10) ? mainArray2 : mainArray2 + 1);
+        int minNestedIndex = nestedArray1 - 1;
+        int maxNestedIndex = ((nestedArray2 == 10) ? nestedArray2 : nestedArray2 + 1);
+        for (int i = minMainIndex; i <= maxMainIndex; i++) {
+            for (int j = minNestedIndex; j <= maxNestedIndex; j++) {
+                if (battlefield[i][j].equals("O")) {
+                    System.out.println("Error! You placed it too close to another one. Try again:");
+                    isChecked = false;
+                    break;
                 }
             }
+        }
 
-            if (isChecked) {
-                for (int i = mainArray; i <= mainArray; i++) {
-                    for (int j = nestedArray1; j <= nestedArray2; j++) {
-                        battlefield[i][j] = "O";
-                    }
-                }
-                isPlaced = true;
-            }
-        } else if (Objects.equals(coordinates.get(1), coordinates.get(3))) {
-            int mainArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
-            int mainArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
-            int nestedArray = coordinates.get(1);
-            int minMainIndex = mainArray1 - 1;
-            int maxMainIndex = ((mainArray2 == 10) ? mainArray2 : mainArray2 + 1);
-            int minNestedIndex = nestedArray - 1;
-            int maxNestedIndex = ((nestedArray == 10) ? nestedArray : nestedArray + 1);
-            for (int i = minMainIndex; i <= maxMainIndex; i++) {
-                for (int j = minNestedIndex; j <= maxNestedIndex; j++) {
-                    if (battlefield[i][j].equals("O")) {
-                        System.out.println("Error! You placed it too close to another one. Try again:");
-                        isChecked = false;
-                        break;
-                    }
+        if (isChecked) {
+            for (int i = mainArray1; i <= mainArray2; i++) {
+                for (int j = nestedArray1; j <= nestedArray2; j++) {
+                    battlefield[i][j] = "O";
                 }
             }
-
-            if (isChecked) {
-                for (int i = mainArray1; i <= mainArray2; i++) {
-                    for (int j = nestedArray; j <= nestedArray; j++) {
-                        battlefield[i][j] = "O";
-                    }
-                }
-                isPlaced = true;
-            }
+            isPlaced = true;
         }
         return isPlaced;
     }
