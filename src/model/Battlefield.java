@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static util.BattleshipUtil.*;
+import static util.BattlefieldUtil.*;
 
 public class Battlefield {
     public static String[][] battlefield = {

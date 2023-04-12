@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static model.Battlefield.*;
-import static util.BattleshipUtil.generateCoordinates;
+import static util.BattlefieldUtil.generateCoordinates;
 import static util.WarUtil.validateShootCoordinates;
 
 public class War {
@@ -19,7 +19,7 @@ public class War {
             try {
                 char[] chars = reader.readLine().replace(" ", "").toCharArray();
                 ArrayList<Integer> indexes;
-                if (validateShootCoordinates(chars[0])) {
+                if (validateShootCoordinates(chars)) {
                     indexes = generateCoordinates(chars);
                 } else {
                     System.out.println("Error! You entered the wrong coordinates! Try again:");

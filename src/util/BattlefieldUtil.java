@@ -1,7 +1,5 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -9,14 +7,14 @@ import java.util.stream.Collectors;
 
 import static model.Battlefield.*;
 
-public class BattleshipUtil {
+public class BattlefieldUtil {
 
     public static ArrayList<Integer> generateCoordinates(char[] chars) {
-        int[] ints = new int[5];
+        int[] ints = new int[chars.length];
         for (int i = 0; i <= chars.length - 1; i++) {
             if (battlefieldIndex.containsKey(String.valueOf(chars[i]))) {
                 ints[i] = battlefieldIndex.get(String.valueOf(chars[i]));
-            } else if (chars.length == 5) {
+            } else if (chars.length == 5 || chars.length == 3 || chars.length == 6) {
                 if (chars[i] == '1' && chars[i + 1] == '0') {
                     ints[i] = Integer.parseInt(String
                             .valueOf(new char[]{chars[i], chars[i + 1]}));
