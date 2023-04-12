@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 import static model.Battlefield.*;
+import static model.War.shootShip;
 
 public class Main {
     static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -15,8 +16,8 @@ public class Main {
             for (Ship ship : Ship.values()) {
                 placeShips(ship.getShipName(), ship.getShipLength(), reader);
             }
-//            placeShips("Battleship", 4);
             printBattlefield();
+            shootShip(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
