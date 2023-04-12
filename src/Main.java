@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 import static model.Battlefield.*;
-import static util.BattleshipUtil.*;
 
 public class Main {
     static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

@@ -1,6 +1,11 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
+
+import static util.BattleshipUtil.*;
 
 public class Battlefield {
     public static String[][] battlefield = {
@@ -46,5 +51,36 @@ public class Battlefield {
             }
         }
         return true;
+    }
+
+    public static void placeShips(String shipName, int  shipSize, BufferedReader reader) throws IOException {
+        boolean isShipPlaced = false;
+        boolean isValid;
+        boolean isChecked;
+        printBattlefield();
+        System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
+        while (!isShipPlaced) {
+            char[] chars = reader.readLine().replace(" ", "").toCharArray();
+            ArrayList<Integer> coordinates = generateCoordinates(chars);
+            isValid = validateCoordinates(coordinates, shipName, shipSize);
+
+            if (Math.abs(coordinates.get(0) - coordinates.get(2)) + 1 == shipSize && isValid) {
+                int mainArray = coordinates.get(1);
+                int nestedArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
+                int nestedArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
+                isChecked = checkNeighbors(nestedArray1, nestedArray2, mainArray, mainArray);
+                if (isChecked) {
+                    isShipPlaced = changeBattlefield(nestedArray1, nestedArray2, mainArray, mainArray);
+                }
+            } else if (Math.abs(coordinates.get(1) - coordinates.get(3)) + 1 == shipSize && isValid) {
+                int mainArray = coordinates.get(0);
+                int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
+                int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
+                isChecked = checkNeighbors(mainArray, mainArray, nestedArray1, nestedArray2);
+                if (isChecked) {
+                    isShipPlaced = changeBattlefield(mainArray, mainArray, nestedArray1, nestedArray2);
+                }
+            }
+        }
     }
 }
