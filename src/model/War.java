@@ -13,7 +13,7 @@ public class War {
     public static void shootShip(BufferedReader reader) {
         boolean isShotTaken = false;
         System.out.println("The game starts!");
-        printBattlefield();
+        printBattlefield(battlefield);
         System.out.println("Take a shot!");
         while (!isShotTaken) {
             try {
@@ -28,15 +28,18 @@ public class War {
 
                 if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"O")) {
                     battlefield[indexes.get(0)][indexes.get(1)] = "X";
+                    fogBattlefield[indexes.get(0)][indexes.get(1)] = "X";
                     isShotTaken = true;
-                    printBattlefield();
+                    printBattlefield(fogBattlefield);
                     System.out.println("You hit a ship!");
                 } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"~")) {
                     battlefield[indexes.get(0)][indexes.get(1)] = "M";
+                    fogBattlefield[indexes.get(0)][indexes.get(1)] = "M";
                     isShotTaken = true;
-                    printBattlefield();
+                    printBattlefield(fogBattlefield);
                     System.out.println("You missed!");
                 }
+                printBattlefield(battlefield);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }

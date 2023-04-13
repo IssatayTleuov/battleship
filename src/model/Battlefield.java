@@ -21,6 +21,21 @@ public class Battlefield {
             {"I", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
             {"J", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"}
     };
+
+    public static String[][] fogBattlefield = {
+            {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
+            {"A", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"B", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"C", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"D", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"E", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"F", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"G", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"H", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"I", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"J", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"}
+    };
+
     public static Map<String, Integer> battlefieldIndex = Map.of(
             "A", 1,
             "B", 2,
@@ -34,11 +49,11 @@ public class Battlefield {
             "J", 10
     );
 
-    public static void printBattlefield() {
+    public static void printBattlefield(String[][] battlefield) {
         System.out.println();
-        for (int i = 0; i <= Battlefield.battlefield.length - 1; i++) {
-            for (int j = 0; j <= Battlefield.battlefield[i].length - 1; j++) {
-                System.out.print(Battlefield.battlefield[i][j] + " ");
+        for (int i = 0; i <= battlefield.length - 1; i++) {
+            for (int j = 0; j <= battlefield[i].length - 1; j++) {
+                System.out.print(battlefield[i][j] + " ");
             }
             System.out.println();
         }
@@ -57,7 +72,7 @@ public class Battlefield {
         boolean isShipPlaced = false;
         boolean isValid;
         boolean isChecked;
-        printBattlefield();
+        printBattlefield(battlefield);
         System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
         while (!isShipPlaced) {
             char[] chars = reader.readLine().replace(" ", "").toCharArray();

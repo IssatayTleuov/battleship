@@ -16,7 +16,7 @@ public class Main {
             for (Ship ship : Ship.values()) {
                 placeShips(ship.getShipName(), ship.getShipLength(), reader);
             }
-            printBattlefield();
+            printBattlefield(battlefield);
             shootShip(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);
