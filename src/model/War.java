@@ -12,8 +12,8 @@ public class War {
 
     public static void shootShip(BufferedReader reader) {
         boolean isShotTaken = false;
-        System.out.println("The game starts!");
-        printBattlefield(battlefield);
+        System.out.println("\nThe game starts!");
+        printBattlefield(fogBattlefield);
         System.out.println("Take a shot!");
         while (!isShotTaken) {
             try {
