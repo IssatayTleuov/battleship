@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static model.Battlefield.*;
+import static model.Ship.checkShip;
 import static model.Ship.checkShips;
 import static util.BattlefieldUtil.generateCoordinates;
 import static util.WarUtil.validateShootCoordinates;
@@ -35,6 +36,9 @@ public class War {
                         isShipsSank = true;
                         System.out.println("You sank the last ship. You won. Congratulations!");
                         break;
+                    } else if (checkShip(indexes)) {
+                        System.out.println("You sank a ship! Specify a new target:");
+                        continue;
                     }
                     System.out.println("You hit a ship. Try again:");
                 } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"~")) {
