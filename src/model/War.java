@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static model.Battlefield.*;
+import static model.Ship.checkShips;
 import static util.BattlefieldUtil.generateCoordinates;
-import static util.WarUtil.checkShips;
 import static util.WarUtil.validateShootCoordinates;
 
 public class War {

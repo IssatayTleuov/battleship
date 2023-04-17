@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 import static model.Battlefield.*;
+import static model.Ship.placeShips;
 import static model.War.shootShip;
 
 public class Main {

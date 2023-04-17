@@ -17,10 +17,4 @@ public class WarUtil {
         }
         return false;
     }
-
-    public static boolean checkShips() {
-        return Arrays.stream(battlefield)
-                .anyMatch(a -> Arrays.stream(a)
-                        .anyMatch("O"::equals));
-    }
 }
