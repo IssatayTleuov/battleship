@@ -1,5 +1,8 @@
 package util;
 
+import java.util.Arrays;
+
+import static model.Battlefield.battlefield;
 import static model.Battlefield.battlefieldIndex;
 
 public class WarUtil {
@@ -13,5 +16,11 @@ public class WarUtil {
                     && Integer.parseInt(String.valueOf(new char[]{chars[1], chars[2]})) == 10;
         }
         return false;
+    }
+
+    public static boolean checkShips() {
+        return Arrays.stream(battlefield)
+                .anyMatch(a -> Arrays.stream(a)
+                        .anyMatch("O"::equals));
     }
 }
