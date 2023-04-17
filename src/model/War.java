@@ -46,6 +46,12 @@ public class War {
                     fogBattlefield[indexes.get(0)][indexes.get(1)] = "M";
                     printBattlefield(fogBattlefield);
                     System.out.println("You missed. Try again:");
+                } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"X")) {
+                    printBattlefield(fogBattlefield);
+                    System.out.println("You hit a ship!");
+                } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"M")) {
+                    printBattlefield(fogBattlefield);
+                    System.out.println("You missed!");
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
