@@ -46,7 +46,7 @@ public class BattlefieldUtil {
         return isValid;
     }
 
-    public static boolean checkNeighbors(int mainArray1, int mainArray2, int nestedArray1, int nestedArray2) {
+    public static boolean checkNeighbors(String[][] battlefield, int mainArray1, int mainArray2, int nestedArray1, int nestedArray2) {
         boolean isChecked = true;
         int minMainIndex = mainArray1 - 1;
         int maxMainIndex = ((mainArray2 == 10) ? mainArray2 : mainArray2 + 1);

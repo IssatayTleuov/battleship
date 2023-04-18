@@ -1,9 +1,9 @@
+import model.Player;
 import model.Ship;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 import static model.Battlefield.*;
 import static model.Ship.placeShips;
@@ -14,10 +14,13 @@ public class Main {
 
     public static void main(String[] args) {
         try (reader) {
-            for (Ship ship : Ship.values()) {
-                placeShips(ship.getShipName(), ship.getShipLength(), reader);
+            for (Player player: Player.values()) {
+                System.out.printf("%s, place your ships to the game field", player.getName());
+                for (Ship ship : Ship.values()) {
+                    placeShips(player.getBattlefield(), ship.getShipName(), ship.getShipLength(), reader);
+                }
+                printBattlefield(player.getBattlefield());
             }
-            printBattlefield(battlefield);
             shootShip(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);
