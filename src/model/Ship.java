@@ -37,6 +37,7 @@ public enum Ship {
         boolean isShipPlaced = false;
         boolean isValid;
         boolean isChecked;
+        System.out.println();
         printBattlefield(battlefield);
         System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
         while (!isShipPlaced) {
@@ -64,19 +65,19 @@ public enum Ship {
         }
     }
 
-    public static boolean checkShips() {
-        return Arrays.stream(player1Battlefield)
+    public static boolean checkShips(String[][] battlefield) {
+        return Arrays.stream(battlefield)
                 .anyMatch(a -> Arrays.stream(a)
                         .anyMatch("O"::equals));
     }
 
-    public static boolean checkShip(ArrayList<Integer> indexes) {
+    public static boolean checkShip(String[][] battlefield, ArrayList<Integer> indexes) {
         int firstIndex = indexes.get(0) == 10 ? indexes.get(0) : indexes.get(0) + 1;
         int lastIndex = indexes.get(1) == 10 ? indexes.get(1) : indexes.get(1) + 1;
-        boolean isAbove = !player1Battlefield[indexes.get(0) - 1][indexes.get(1)].equals("O");
-        boolean isBottom = !player1Battlefield[firstIndex][indexes.get(1)].equals("O");
-        boolean isLeft = !player1Battlefield[indexes.get(0)][lastIndex].equals("O");
-        boolean isRight = !player1Battlefield[indexes.get(0)][indexes.get(1) - 1].equals("O");
+        boolean isAbove = !battlefield[indexes.get(0) - 1][indexes.get(1)].equals("O");
+        boolean isBottom = !battlefield[firstIndex][indexes.get(1)].equals("O");
+        boolean isLeft = !battlefield[indexes.get(0)][lastIndex].equals("O");
+        boolean isRight = !battlefield[indexes.get(0)][indexes.get(1) - 1].equals("O");
         return isAbove && isBottom && isLeft && isRight;
     }
 }

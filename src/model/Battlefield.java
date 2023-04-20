@@ -73,7 +73,6 @@ public class Battlefield {
     );
 
     public static void printBattlefield(String[][] battlefield) {
-        System.out.println();
         for (int i = 0; i <= battlefield.length - 1; i++) {
             for (int j = 0; j <= battlefield[i].length - 1; j++) {
                 System.out.print(battlefield[i][j] + " ");
