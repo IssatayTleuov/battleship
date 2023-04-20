@@ -20,15 +20,27 @@ public class Main {
                 for (Ship ship : Ship.values()) {
                     placeShips(player.getBattlefield(), ship.getShipName(), ship.getShipLength(), reader);
                 }
-                //TODO Make print text 1 time
+
+                if (player.equals(Player.PLAYER1)) {
+                    System.out.println();
+                    printBattlefield(player.getBattlefield());
+                    promptEnterPress();
+                }
                 System.out.println();
                 printBattlefield(player.getBattlefield());
-                promptEnterPress();
             }
 
-            for (Player player: Player.values()) {
-                promptEnterPress();
-                shootShip(player.getBattlefield(), player.getFogBattlefield(), reader, player);
+            boolean isShipsSank = false;
+            while (!isShipsSank) {
+                for (Player player: Player.values()) {
+                    if (player.equals(Player.PLAYER1)) {
+                        promptEnterPress();
+                        isShipsSank = shootShip(player.getBattlefield(), Player.PLAYER2.getBattlefield(), Player.PLAYER2.getFogBattlefield(), reader, player);
+                    } else if (player.equals(Player.PLAYER2)) {
+                        promptEnterPress();
+                        isShipsSank = shootShip(player.getBattlefield(), Player.PLAYER1.getBattlefield(), Player.PLAYER1.getFogBattlefield(), reader, player);
+                    }
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

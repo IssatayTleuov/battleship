@@ -11,15 +11,15 @@ import static util.BattlefieldUtil.generateCoordinates;
 import static util.WarUtil.validateShootCoordinates;
 
 public class War {
-//TODO Make method print fogBattle of not playing gamer
-    public static void shootShip(String[][] battlefield, String[][] fogBattlefield, BufferedReader reader, Player player) {
+
+    public static boolean shootShip(String[][] mainBattlefield, String[][] minorBattlefield, String[][] fogBattlefield, BufferedReader reader, Player player) {
         boolean isShipsSank = false;
-        boolean isShipSank = false;
+        boolean isShootTaken = false;
         printBattlefield(fogBattlefield);
         System.out.println("---------------------");
-        printBattlefield(battlefield);
+        printBattlefield(mainBattlefield);
         System.out.printf("%s, it's your turn:\n", player.getName());
-        while (!isShipsSank || !isShipSank) {
+        while (!isShootTaken) {
             try {
                 char[] chars = reader.readLine().replace(" ", "").toCharArray();
                 ArrayList<Integer> indexes;
@@ -30,36 +30,37 @@ public class War {
                     continue;
                 }
 
-                if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"O")) {
-                    battlefield[indexes.get(0)][indexes.get(1)] = "X";
+                if (Objects.equals(minorBattlefield[indexes.get(0)][indexes.get(1)],"O")) {
+                    minorBattlefield[indexes.get(0)][indexes.get(1)] = "X";
                     fogBattlefield[indexes.get(0)][indexes.get(1)] = "X";
                     printBattlefield(fogBattlefield);
-                    if (!checkShips(battlefield)) {
-                        isShipsSank = true;
+                    if (!checkShips(minorBattlefield)) {
                         System.out.println("You sank the last ship. You won. Congratulations!");
+                        isShipsSank = true;
                         break;
-                    } else if (checkShip(battlefield, indexes)) {
-//                        System.out.println("You sank a ship! Specify a new target:");
+                    } else if (checkShip(minorBattlefield, indexes)) {
                         System.out.println("You sank a ship!");
+                        isShootTaken = true;
                         continue;
                     }
                     System.out.println("You hit a ship.");
-                } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"~")) {
-                    battlefield[indexes.get(0)][indexes.get(1)] = "M";
+                    isShootTaken = true;
+                } else if (Objects.equals(minorBattlefield[indexes.get(0)][indexes.get(1)],"~")) {
+                    minorBattlefield[indexes.get(0)][indexes.get(1)] = "M";
                     fogBattlefield[indexes.get(0)][indexes.get(1)] = "M";
-//                    printBattlefield(fogBattlefield);
-                    System.out.println("You missed.");
-                } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"X")) {
-//                    printBattlefield(fogBattlefield);
-                    isShipSank = true;
-                    System.out.println("You hit a ship!");
-                } else if (Objects.equals(battlefield[indexes.get(0)][indexes.get(1)],"M")) {
-//                    printBattlefield(fogBattlefield);
                     System.out.println("You missed!");
+                    isShootTaken = true;
+                } else if (Objects.equals(minorBattlefield[indexes.get(0)][indexes.get(1)],"X")) {
+                    isShootTaken = true;
+                    System.out.println("You hit a ship!");
+                } else if (Objects.equals(minorBattlefield[indexes.get(0)][indexes.get(1)],"M")) {
+                    System.out.println("You missed!");
+                    isShootTaken = true;
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
+        return isShipsSank;
     }
 }
