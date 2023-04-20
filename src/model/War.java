@@ -11,7 +11,7 @@ import static util.BattlefieldUtil.generateCoordinates;
 import static util.WarUtil.validateShootCoordinates;
 
 public class War {
-
+//TODO Make method print fogBattle of not playing gamer
     public static void shootShip(String[][] battlefield, String[][] fogBattlefield, BufferedReader reader, Player player) {
         boolean isShipsSank = false;
         boolean isShipSank = false;
