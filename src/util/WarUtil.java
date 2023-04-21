@@ -1,8 +1,5 @@
 package util;
 
-import java.util.Arrays;
-
-import static model.Battlefield.battlefield;
 import static model.Battlefield.battlefieldIndex;
 
 public class WarUtil {

@@ -33,10 +33,11 @@ public enum Ship {
         return shipLength;
     }
 
-    public static void placeShips(String shipName, int  shipSize, BufferedReader reader) throws IOException {
+    public static void placeShips(String[][] battlefield, String shipName, int  shipSize, BufferedReader reader) throws IOException {
         boolean isShipPlaced = false;
         boolean isValid;
         boolean isChecked;
+        System.out.println();
         printBattlefield(battlefield);
         System.out.println("Enter the coordinates of the " + shipName + " (" + shipSize + " cells):");
         while (!isShipPlaced) {
@@ -48,29 +49,29 @@ public enum Ship {
                 int mainArray = coordinates.get(1);
                 int nestedArray1 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(0) : coordinates.get(2);
                 int nestedArray2 = (coordinates.get(0) < coordinates.get(2)) ? coordinates.get(2) : coordinates.get(0);
-                isChecked = checkNeighbors(nestedArray1, nestedArray2, mainArray, mainArray);
+                isChecked = checkNeighbors(battlefield, nestedArray1, nestedArray2, mainArray, mainArray);
                 if (isChecked) {
-                    isShipPlaced = changeBattlefield(nestedArray1, nestedArray2, mainArray, mainArray);
+                    isShipPlaced = changeBattlefield(battlefield, nestedArray1, nestedArray2, mainArray, mainArray);
                 }
             } else if (Math.abs(coordinates.get(1) - coordinates.get(3)) + 1 == shipSize && isValid) {
                 int mainArray = coordinates.get(0);
                 int nestedArray1 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(1) : coordinates.get(3);
                 int nestedArray2 = (coordinates.get(1) < coordinates.get(3)) ? coordinates.get(3) : coordinates.get(1);
-                isChecked = checkNeighbors(mainArray, mainArray, nestedArray1, nestedArray2);
+                isChecked = checkNeighbors(battlefield, mainArray, mainArray, nestedArray1, nestedArray2);
                 if (isChecked) {
-                    isShipPlaced = changeBattlefield(mainArray, mainArray, nestedArray1, nestedArray2);
+                    isShipPlaced = changeBattlefield(battlefield, mainArray, mainArray, nestedArray1, nestedArray2);
                 }
             }
         }
     }
 
-    public static boolean checkShips() {
+    public static boolean checkShips(String[][] battlefield) {
         return Arrays.stream(battlefield)
                 .anyMatch(a -> Arrays.stream(a)
                         .anyMatch("O"::equals));
     }
 
-    public static boolean checkShip(ArrayList<Integer> indexes) {
+    public static boolean checkShip(String[][] battlefield, ArrayList<Integer> indexes) {
         int firstIndex = indexes.get(0) == 10 ? indexes.get(0) : indexes.get(0) + 1;
         int lastIndex = indexes.get(1) == 10 ? indexes.get(1) : indexes.get(1) + 1;
         boolean isAbove = !battlefield[indexes.get(0) - 1][indexes.get(1)].equals("O");

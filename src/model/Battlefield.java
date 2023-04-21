@@ -1,14 +1,9 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 
-import static util.BattlefieldUtil.*;
-
 public class Battlefield {
-    public static String[][] battlefield = {
+    public static String[][] player1Battlefield = {
             {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
             {"A", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
             {"B", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
@@ -22,7 +17,35 @@ public class Battlefield {
             {"J", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"}
     };
 
-    public static String[][] fogBattlefield = {
+    public static String[][] player1FogBattlefield = {
+            {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
+            {"A", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"B", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"C", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"D", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"E", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"F", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"G", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"H", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"I", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"J", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"}
+    };
+
+    public static String[][] player2Battlefield = {
+            {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
+            {"A", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"B", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"C", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"D", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"E", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"F", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"G", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"H", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"I", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
+            {"J", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"}
+    };
+
+    public static String[][] player2FogBattlefield = {
             {" ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"},
             {"A", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
             {"B", "~", "~", "~", "~", "~", "~", "~", "~", "~", "~"},
@@ -50,7 +73,6 @@ public class Battlefield {
     );
 
     public static void printBattlefield(String[][] battlefield) {
-        System.out.println();
         for (int i = 0; i <= battlefield.length - 1; i++) {
             for (int j = 0; j <= battlefield[i].length - 1; j++) {
                 System.out.print(battlefield[i][j] + " ");
@@ -59,7 +81,7 @@ public class Battlefield {
         }
     }
 
-    public static boolean changeBattlefield(int mainArray1, int mainArray2, int nestedArray1, int nestedArray2) {
+    public static boolean changeBattlefield(String[][] battlefield, int mainArray1, int mainArray2, int nestedArray1, int nestedArray2) {
         for (int i = mainArray1; i <= mainArray2; i++) {
             for (int j = nestedArray1; j <= nestedArray2; j++) {
                 battlefield[i][j] = "O";
